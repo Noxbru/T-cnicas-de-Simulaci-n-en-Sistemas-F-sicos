@@ -1,0 +1,24 @@
+This is the same code as in the repository
+of the N-Bodies Problem:
+https://github.com/Noxbru/N-bodies-Problem
+
+This is an iterative method to calculate
+the evolution of a N-bodies system which
+interact with gravitatory force.
+
+You have to edit the 'program.c' code
+to add new bodies, but I am thinking in
+a way to add them via other methods, such
+as keyboard or a file.
+
+To change/add new bodies, you have to change
+the variable Earth_Moon.n to the number of
+bodies. Then, the bodies are writen following
+this pattern: {Mass, {Position vector},
+{Velocity vector}, {dv vector}, {dr vector},
+Whether is fixed or not}
+
+Maybe, to get the results you need, you will
+have to make more steps changing the upper
+limit for 'time'. Or make the steps a
+different size in 'sistem.h'

@@ -1,0 +1,17 @@
+These are the Exercises and the problems of Lesson 1:
+
+Exercise 1: Harmonic oscilator in 1 dimension using
+Euler and Verlet algorithms.
+
+Exercise 2: N-Particles with gravitatory interaction
+using Euler and Verlet algorithms.
+
+Problem 1: Plot some variables in function of the
+time of the simulation. Compare with the analitic
+solution. [Exercise 1]
+
+Problem 2 (ampliation): After N steps, reverse time
+and see what happen. [Exercise 1]
+
+Problem 3 (ampliation): Simulate the Earth-Moon
+system.
