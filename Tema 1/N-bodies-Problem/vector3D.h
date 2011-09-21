@@ -63,6 +63,12 @@ struct vector3D resta(struct vector3D v,struct vector3D w)
     return suma(v,(struct vector3D){-w.x,-w.y,-w.z});
 }
 
+/* Returns the vector multiplied by an scalar */
+struct vector3D multiply_vector_by(struct vector3D v, double n)
+{
+    return (struct vector3D) {v.x*n,v.y*n,v.z*n);
+}
+
 /* Returns the length of the vector */
 long double module(struct vector3D v)
 {
