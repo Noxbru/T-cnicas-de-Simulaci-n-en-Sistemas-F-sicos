@@ -14,7 +14,16 @@
 
 /* Copyright 2011 Bruno Jiménez */
 
+/* This program is the solution to the Exercise 1 and problems 1 and 2
+ * of Lesson 1:
+ * Program the harmonic oscilator in 1 dimension with Euler and Verlet
+ * algorithms (Exercise 1)
+ * Plot with gnuplot some variables (Problem 1)
+ * After N steps invert time and see what happens (Problem 2)
+ */
+
 #include <stdio.h>
+#include <string.h>
 
 double h=0.001;
 double k=1;
@@ -22,12 +31,21 @@ double l=1;
 double s=0;
 double m=1;
 
-
-void evoluciona(double *x, double *v)
+void evoluciona(double *x, double *v, int method)
 {
     double v_old=*v;
-    *v+=h*(-k*(*x-l-s));
-    *x+=h*v_old;
+    switch(method)
+    {
+        case 0:
+            *v+=h*(-k*(*x-l-s));
+            *x+=h*v_old;
+            break;
+        case 1:
+            *v+=h/2*(-k*(*x-l-s));
+            *x+=h*(*v);
+            *v+=h/2*(-k*(*x-l-s));
+            break;
+    }
 }
 
 void escribe_res(double tiempo, double x, double v)
@@ -42,18 +60,29 @@ void escribe_res(double tiempo, double x, double v)
 
 int main(int argc, const char *argv[])
 {
-    long int i;
-    long int j;
+    long int i, j;
     long int time=0;
+    int method = 1;
     int inter = 100;
     double x, v;
     x=0;
     v=0;
 
+    if(argc!=2)
+    {
+        fprintf(stderr,"USAGE %s euler or verlet\n",argv[0]);
+        return 1;
+    }
+
+    if(!strcmp(argv[1],"euler"))
+        method = 0;
+    else
+        method = 1;
+
     for(i=0;i<800;i++)
     {
         for(j=0;j<inter;j++)
-            evoluciona(&x,&v);
+            evoluciona(&x,&v,method);
         time+=inter;
         escribe_res(time,x,v);
     }
@@ -63,7 +92,7 @@ int main(int argc, const char *argv[])
     for(i=0;i<800;i++)
     {
         for(j=0;j<inter;j++)
-            evoluciona(&x,&v);
+            evoluciona(&x,&v,method);
         time+=inter;
         escribe_res(time,x,v);
     }
