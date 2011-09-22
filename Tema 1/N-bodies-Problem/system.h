@@ -47,9 +47,7 @@ void print_system(struct system s)
 {
     int i;
     for (i = 0; i < s.n; i++)
-    {
         print_body(s.b[i]);
-    }
 }
 
 /* Temporal evolution based on Euler's Algorithm */
@@ -81,6 +79,7 @@ void temporal_evolution_vt(struct system *s, double h)
 {
     int i,j;
     struct vector3D f;
+    struct vector3D dv;
     for (i = 0; i < s->n; i++)
         if(!s->b[i].fixed)
             s->b[i].r = suma(s->b[i].r, s->b[i].dr); 
@@ -92,7 +91,9 @@ void temporal_evolution_vt(struct system *s, double h)
             {
                 f = force(s->b[i],s->b[j]);
                 k1 = multiply_vector_by(f,h/s->b[i].m/2);
-                s->b[i].dr=(struct vector3D) {s->b[i].v.x*h+k1.x*h,s->b[i].v.y*h+k1.y*h,s->b[i].v.z*h+k1.z*h};
+                dv = suma(s->b[i].v,k1);
+
+                s->b[i].dr = multiply_vector_by(dv,h);
 
                 f = force_rk(s->b[i],s->b[j]);
                 k2 = multiply_vector_by(f,h/s->b[i].m/2);
@@ -104,74 +105,15 @@ void temporal_evolution_vt(struct system *s, double h)
             {
                 f = force(s->b[j],s->b[i]);
                 k1 = multiply_vector_by(f,h/s->b[j].m/2);
-                s->b[j].dr=(struct vector3D) {s->b[j].v.x*h+k1.x*h,s->b[j].v.y*h+k1.y*h,s->b[j].v.z*h+k1.z*h};
+                dv = suma(s->b[j].v,k1);
+
+                s->b[j].dr = multiply_vector_by(dv,h);
 
                 f = force_rk(s->b[j],s->b[i]);
                 k2 = multiply_vector_by(f,h/s->b[j].m/2);
 
                 s->b[j].dv = suma(k1+k2);
                 s->b[j].v=suma(s->b[j].v,s->b[j].dv);
-            }
-        }
-}
-
-/* Temporal evolution based on Runge-Kutta Algorithm */
-void temporal_evolution_rk(struct system *s)
-{
-    int i,j;
-    double step_size=1;
-    struct vector3D k1, k2, k3, k4;
-    struct vector3D f;
-    
-    for (i = 0; i < s->n; i++)
-        if(!s->b[i].fixed)
-            s->b[i].r = suma(s->b[i].r, s->b[i].dr); 
-
-    for (i = 0; i < s->n; i++)
-        for (j = i+1; j < s->n; j++)
-        {
-            if(!s->b[i].fixed)
-            {
-                f = force(s->b[i],s->b[j]);
-                k1 = multiply_vector_by(f,step_size/s->b[i].m);
-
-                s->b[i].dr = multiply_vector_by(k1,step_size/2);
-                f = force_rk(s->b[i], s->b[j]);
-                k2 = multiply_vector_by(f,step_size/s->b[i].m);
-
-                s->b[i].dr = multiply_vector_by(k2,step_size/2);
-                f = force_rk(s->b[i], s->b[j]);
-                k3 = multiply_vector_by(f,step_size/s->b[i].m);
-
-                s->b[i].dr = multiply_vector_by(k3,step_size);
-                f = force_rk(s->b[i], s->b[j]);
-                k4 = multiply_vector_by(f,step_size/s->b[i].m);
-
-                s->b[i].dr = multiply_vector_by(s->b[i].v,step_size);
-                s->b[i].dv = (struct vector3D) {k1.x/6+k2.x/3+k3.x/3+k4.x/6, k1.y/6+k2.y/3+k3.y/3+k4.y/6, k1.z/6+k2.z/3+k3.z/3+k4.z/6};
-                s->b[i].v  = suma(s->b[i].v, s->b[i].dv);
-            }
-
-            if(!s->b[j].fixed)
-            {
-                f = force(s->b[j],s->b[i]);
-                k1 = multiply_vector_by(f,step_size/s->b[j].m);
-
-                s->b[j].dr = multiply_vector_by(k1,step_size/2);
-                f = force_rk(s->b[j], s->b[i]);
-                k2 = multiply_vector_by(f,step_size/s->b[j].m);
-
-                s->b[j].dr = multiply_vector_by(k2,step_size/2);
-                f = force_rk(s->b[j], s->b[i]);
-                k3 = multiply_vector_by(f,step_size/s->b[j].m);
-
-                s->b[j].dr = multiply_vector_by(k3,step_size);
-                f = force_rk(s->b[j], s->b[i]);
-                k4 = multiply_vector_by(f,step_size/s->b[j].m);
-
-                s->b[j].dr = multiply_vector_by(s->b[j].v,step_size);
-                s->b[j].dv = (struct vector3D) {k1.x/6+k2.x/3+k3.x/3+k4.x/6, k1.y/6+k2.y/3+k3.y/3+k4.y/6, k1.z/6+k2.z/3+k3.z/3+k4.z/6};
-                s->b[j].v  = suma(s->b[j].v, s->b[j].dv);
             }
         }
 }

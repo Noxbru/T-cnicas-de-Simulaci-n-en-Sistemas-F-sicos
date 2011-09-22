@@ -1,6 +1,7 @@
-This is the same code as in the repository
+This is similar code as in the repository
 of the N-Bodies Problem:
 https://github.com/Noxbru/N-bodies-Problem
+but here, there isn't the RK algorithm
 
 This is an iterative method to calculate
 the evolution of a N-bodies system which
