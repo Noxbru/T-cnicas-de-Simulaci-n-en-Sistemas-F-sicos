@@ -61,11 +61,11 @@ void escribe_res(double tiempo, double x, double v)
 
 void printusage(const char *name)
 {
-    printf("USAGE\n");
-    printf("-----\n");
-    printf("%s\n",name);
-    printf("OR\n");
-    printf("%s -m (euler|verlet) (default verlet)\n",name);
+    fprintf(stderr,"USAGE\n");
+    fprintf(stderr,"-----\n");
+    fprintf(stderr,"%s\n",name);
+    fprintf(stderr,"OR\n");
+    fprintf(stderr,"%s -m (euler|verlet) (default verlet)\n",name);
     exit(1);
 }
 
