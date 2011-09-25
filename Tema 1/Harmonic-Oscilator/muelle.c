@@ -23,6 +23,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 double h=0.001;
@@ -58,6 +59,16 @@ void escribe_res(double tiempo, double x, double v)
     printf("%lf\t%lf\t%lf\n",e_pot,e_cin,e_mec);
 }
 
+void printusage(const char *name)
+{
+    printf("USAGE\n");
+    printf("-----\n");
+    printf("%s\n",name);
+    printf("OR\n");
+    printf("%s -m (euler|verlet) (default verlet)\n",name);
+    exit(1);
+}
+
 int main(int argc, const char *argv[])
 {
     long int i, j;
@@ -68,16 +79,18 @@ int main(int argc, const char *argv[])
     x=0;
     v=0;
 
-    if(argc!=2)
+    for(i = 1; i < argc; i++)
     {
-        fprintf(stderr,"USAGE %s euler or verlet\n",argv[0]);
-        return 1;
+        if(!strcmp(argv[i],"-m"))
+        {
+            if(i+1==argc) printusage(argv[0]);
+            else i++;
+            if(!strcmp(argv[i],"euler"))       method = 0;
+            else if(!strcmp(argv[i],"verlet")) method = 1;
+            else printusage(argv[0]);
+        }
+        else printusage(argv[0]);
     }
-
-    if(!strcmp(argv[1],"euler"))
-        method = 0;
-    else
-        method = 1;
 
     for(i=0;i<800;i++)
     {
