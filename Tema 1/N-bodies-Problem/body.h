@@ -106,7 +106,7 @@ struct vector3D force(struct body a, struct body b)
 
 /* Returns a vector which is the force between two bodies
  * in a diferent point according to the dr vector           */
-struct vector3D force_rk(struct body a, struct body b)
+struct vector3D force_dr(struct body a, struct body b)
 {
     long double aux1 = distancia(suma(a.r, a.dr), b.r);
     long double aux2=6.67e-11*a.m*b.m/aux1/aux1/aux1;
