@@ -54,9 +54,9 @@ struct vector3D force_system(struct system s, unsigned int i)
 {
     int j;
     struct vector3D f = {0,0,0};
-    for(j = 0; j < s->n; j++)
+    for(j = 0; j < s.n; j++)
         if(i!=j)
-            f=suma(f,force(s->b[i],s->b[j]));
+            f=suma(f,force(s.b[i],s.b[j]));
     return f;
 }
 
@@ -64,9 +64,9 @@ struct vector3D force_system_dr(struct system s, unsigned int i)
 {
     int j;
     struct vector3D f = {0,0,0};
-    for(j = 0; j < s->n; j++)
+    for(j = 0; j < s.n; j++)
         if(i!=j)
-            f=suma(f,force_dr(s->b[i],s->b[j]));
+            f=suma(f,force_dr(s.b[i],s.b[j]));
     return f;
 }
 
@@ -80,7 +80,7 @@ void temporal_evolution(struct system *s, double h)
     for (i = 0; i < s->n; i++)
         if(!s->b[i].fixed)
         {
-            f=force_system(s,i);
+            f=force_system(*s,i);
             k1=multiply_vector_by(f,1/s->b[i].m);
             s->b[i].dr=multiply_vector_by(s->b[i].v,h);
             s->b[i].dv=multiply_vector_by(k1,h);
@@ -95,20 +95,21 @@ void temporal_evolution_vt(struct system *s, double h)
     int i,j;
     struct vector3D f;
     struct vector3D dv;
+    struct vector3D k1, k2;
 
     for(i = 0; i < s->n; i++)
         if(!s->b[i].fixed)
         {
-            f = force_system(s,i);
+            f = force_system(*s,i);
             k1 = multiply_vector_by(f,h/s->b[i].m/2);
             dv = suma(s->b[i].v,k1);
 
             s->b[i].dr = multiply_vector_by(dv,h);
 
-            f = force_system_dr(s,i);
+            f = force_system_dr(*s,i);
             k2 = multiply_vector_by(f,h/s->b[i].m/2);
 
-            s->b[i].dv = suma(k1+k2);
+            s->b[i].dv = suma(k1,k2);
             s->b[i].v=suma(s->b[i].v,s->b[i].dv);
             s->b[i].r = suma(s->b[i].r, s->b[i].dr); 
         }
