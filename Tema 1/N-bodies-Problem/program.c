@@ -24,11 +24,12 @@
 
 void printusage(const char *name)
 {
-    fprintf(stderr,"USAGE\n");
-    fprintf(stderr,"-----\n");
-    fprintf(stderr,"%s\n",name);
-    fprintf(stderr,"OR\n");
-    fprintf(stderr,"%s -m (euler|verlet) (default verlet)\n",name);
+    fprintf(stderr,"USAGE:\n");
+    fprintf(stderr,"  %s [Options]\n",name);
+    fprintf(stderr,"\n");
+    fprintf(stderr,"Options:\n");
+    fprintf(stderr,"  -m\talgorithm to use: euler or verlet (default verlet)\n");
+    fprintf(stderr,"\n");
     exit(1);
 }
 
