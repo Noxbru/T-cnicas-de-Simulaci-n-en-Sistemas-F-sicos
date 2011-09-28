@@ -85,8 +85,11 @@ void temporal_evolution(struct system *s, double h)
             s->b[i].dr=multiply_vector_by(s->b[i].v,h);
             s->b[i].dv=multiply_vector_by(k1,h);
             s->b[i].v=suma(s->b[i].v,s->b[i].dv);
-            s->b[i].r = suma(s->b[i].r, s->b[i].dr); 
         }
+
+    for(i = 0; i < s->n; i++)
+        if(!s->b[i].fixed)
+            s->b[i].r = suma(s->b[i].r, s->b[i].dr); 
 }
 
 /* Temporal evolution based on Verlet's Algorithm */
@@ -111,6 +114,9 @@ void temporal_evolution_vt(struct system *s, double h)
 
             s->b[i].dv = suma(k1,k2);
             s->b[i].v=suma(s->b[i].v,s->b[i].dv);
-            s->b[i].r = suma(s->b[i].r, s->b[i].dr); 
         }
+
+    for(i = 0; i < s->n; i++)
+        if(!s->b[i].fixed)
+            s->b[i].r = suma(s->b[i].r, s->b[i].dr); 
 }
