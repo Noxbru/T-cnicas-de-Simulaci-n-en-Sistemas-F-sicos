@@ -31,7 +31,7 @@ int evolution(double *temp, unsigned int N, double C)
         temp_old_aux=temp[i];
         temp[i]=C_0*temp[i]+C*(temp_old+temp[i+1]);
         temp_old=temp_old_aux;
-        if(fabs(temp_old-temp[i])>1e-5)
+        if(fabs(temp_old-temp[i])>1e-6)
             flag=1;
     }
     return flag;
@@ -66,7 +66,8 @@ int main(int argc, const char *argv[])
     C=K*h/a/a;
     if(C>0.5)
         fprintf(stderr,"Value of C higher than 0.5: %lf Might give wrong results\n",C);
-
+    else if(C<5e-4)
+        fprintf(stderr,"Value of C lower than 0.0005: %lf Might give wrong results\n",C);
 
     while(evolution(bar,N,C))
     {
@@ -78,8 +79,8 @@ int main(int argc, const char *argv[])
             for(i = 1; i < N-1; i++)
                 bar[i]=(bar[0]+bar[N-1])/2;
         }
-        /*if(time%500==0)
-        {
+        //if(time%500==0)
+        /*{
             for(i = 0; i < N; i++)
                 printf("%d\t%u\t%lf\n",i,time,bar[i]);
             getchar();
