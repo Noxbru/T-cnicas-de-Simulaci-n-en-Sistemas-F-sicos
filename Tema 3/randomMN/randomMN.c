@@ -5,16 +5,17 @@
 
 int main(int argc, const char *argv[])
 {
+    srand(time(NULL));
     void **args;
     args=arghandler(argc,argv);
     int i;
     int min, max;
-    min=*(int *)args[0];
+    long int numb;
+    numb=*(long int *)args[0];
     max=*(int *)args[1];
-    srand(time(NULL));
-    for(i = 0; i < 100; i++)
-    {
+    min=*(int *)args[2];
+
+    for(i = 0; i < numb; i++)
         printf("%i\n",min+(int)((max-min)*((float)rand()/RAND_MAX)));
-    }
     return 0;
 }

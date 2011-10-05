@@ -21,31 +21,24 @@
 
 int main(int argc, const char *argv[])
 {
+    srand(time(NULL));
     void **args;
     args=arghandler(argc,argv);
-    int i,j;
     int min, max;
-    min=*(int *)args[0];
+    long int numb;
+    numb=*(long int *)args[0];
     max=*(int *)args[1];
+    min=*(int *)args[2];
 
     int x,y,z;
-    int **frecs;
-    frecs=malloc((max-min)*sizeof(int *));
-    for(i = 0; i < max-min; i++)
-        frecs[i]=calloc(max-min,sizeof(int));
 
-    srand(time(NULL));
-    for(i = 0; i < 10000; i++)
+    for(i = 0; i < numb; i++)
     {
         x=min+(int)((max-min)*((float)rand()/RAND_MAX));
         y=min+(int)((max-min)*((float)rand()/RAND_MAX));
-        //z=min+(int)((max-min)*((float)rand()/RAND_MAX));
-        frecs[x][y]++;
-        //printf("%d\t%d\n",x,y);
+        z=min+(int)((max-min)*((float)rand()/RAND_MAX));
+        printf("%d\t%d\n",x,y,z);
     }
-    for(i = 0; i < max-min; i++)
-        for(j = 0; j < max-min; j++)
-            printf("%d\t%d\t%d\n",i,j,frecs[i][j]);
 
     return 0;
 }

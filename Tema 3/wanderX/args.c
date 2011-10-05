@@ -26,9 +26,15 @@ void usage(const char *name)
     fprintf(stderr,"OPTIONS:\n");
     fprintf(stderr,"  -h\tshow this help\n");
     fprintf(stderr,"  -A\tnumber of aleatory numbers (default 100000)\n");
+    fprintf(stderr,"  -eps\tmaximun movement of the particle (default 1)\n");
     fprintf(stderr,"  -I\tnumber of intervals (default 10)\n");
     fprintf(stderr,"  -N\tlower random number (default 0)\n");
     fprintf(stderr,"  -M\thigher random number (default 100)\n");
+    fprintf(stderr,"\n");
+    fprintf(stderr,"  -method\tmethod of handling extremes (default 1)\n");
+    fprintf(stderr,"\t\t0: Reflex\n");
+    fprintf(stderr,"\t\t1: Reject\n");
+    fprintf(stderr,"\t\t2: Portal\n");
     exit(1);
 }
 
@@ -36,11 +42,13 @@ void *arghandler(int argc, const char *argv[])
 {
     int i;
     void **a;
-    a=malloc(4*sizeof(void *));
+    a=malloc(6*sizeof(void *));
     a[0]=malloc(sizeof(long int));  *(long int *)a[0]=100000;
-    a[1]=malloc(sizeof(int));       *(int *)a[1]=10;
-    a[2]=malloc(sizeof(int));       *(int *)a[2]=0;
-    a[3]=malloc(sizeof(int));       *(int *)a[3]=100;
+    a[1]=malloc(sizeof(double));    *(double *)a[1]=1;
+    a[2]=malloc(sizeof(int));       *(int *)a[2]=10;
+    a[3]=malloc(sizeof(int));       *(int *)a[3]=0;
+    a[4]=malloc(sizeof(int));       *(int *)a[4]=100;
+    a[5]=malloc(sizeof(char));      *(char *)a[5]=100;
     for(i = 1; i < argc; i++)
     {
         if(!strcmp(argv[i],"-h"))
@@ -56,18 +64,18 @@ void *arghandler(int argc, const char *argv[])
                     usage(argv[0]);
             }
         }
-        else if(!strcmp(argv[i],"-I"))
+        else if(!strcmp(argv[i],"-eps"))
         {
             if(i+1==argc)
                 usage(argv[0]);
             else
             {
                 i++;
-                if(!sscanf(argv[i],"%i",a[1]))
+                if(!sscanf(argv[i],"%lf",a[1]))
                     usage(argv[0]);
             }
         }
-        else if(!strcmp(argv[i],"-N"))
+        else if(!strcmp(argv[i],"-I"))
         {
             if(i+1==argc)
                 usage(argv[0]);
@@ -78,7 +86,7 @@ void *arghandler(int argc, const char *argv[])
                     usage(argv[0]);
             }
         }
-        else if(!strcmp(argv[i],"-M"))
+        else if(!strcmp(argv[i],"-N"))
         {
             if(i+1==argc)
                 usage(argv[0]);
@@ -86,6 +94,28 @@ void *arghandler(int argc, const char *argv[])
             {
                 i++;
                 if(!sscanf(argv[i],"%i",a[3]))
+                    usage(argv[0]);
+            }
+        }
+        else if(!strcmp(argv[i],"-M"))
+        {
+            if(i+1==argc)
+                usage(argv[0]);
+            else
+            {
+                i++;
+                if(!sscanf(argv[i],"%i",a[4]))
+                    usage(argv[0]);
+            }
+        }
+        else if(!strcmp(argv[i],"-method"))
+        {
+            if(i+1==argc)
+                usage(argv[0]);
+            else
+            {
+                i++;
+                if(!sscanf(argv[i],"%i",a[4]))
                     usage(argv[0]);
             }
         }

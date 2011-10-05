@@ -25,10 +25,10 @@ void usage(const char *name)
     fprintf(stderr,"\n");
     fprintf(stderr,"OPTIONS:\n");
     fprintf(stderr,"  -h\tshow this help\n");
-    fprintf(stderr,"  -A\tnumber of aleatory numbers (default 100000)\n");
+    fprintf(stderr,"  -A\tnumber of aleatory numbers to generate (default 100000)\n");
     fprintf(stderr,"  -I\tnumber of intervals (default 10)\n");
-    fprintf(stderr,"  -N\tlower random number (default 0)\n");
     fprintf(stderr,"  -M\thigher random number (default 100)\n");
+    fprintf(stderr,"  -N\tlower random number (default 0)\n");
     fprintf(stderr,"\n");
     fprintf(stderr,"NOTES:\n");
     fprintf(stderr,"  The number of intervals CAN'T be higher\n");
@@ -43,8 +43,8 @@ void *arghandler(int argc, const char *argv[])
     a=malloc(4*sizeof(void *));
     a[0]=malloc(sizeof(long int));  *(long int *)a[0]=100000;
     a[1]=malloc(sizeof(int));       *(int *)a[1]=10;
-    a[2]=malloc(sizeof(int));       *(int *)a[2]=0;
-    a[3]=malloc(sizeof(int));       *(int *)a[3]=100;
+    a[2]=malloc(sizeof(int));       *(int *)a[2]=100;
+    a[3]=malloc(sizeof(int));       *(int *)a[3]=0;
     for(i = 1; i < argc; i++)
     {
         if(!strcmp(argv[i],"-h"))
@@ -71,7 +71,7 @@ void *arghandler(int argc, const char *argv[])
                     usage(argv[0]);
             }
         }
-        else if(!strcmp(argv[i],"-N"))
+        else if(!strcmp(argv[i],"-M"))
         {
             if(i+1==argc)
                 usage(argv[0]);
@@ -82,7 +82,7 @@ void *arghandler(int argc, const char *argv[])
                     usage(argv[0]);
             }
         }
-        else if(!strcmp(argv[i],"-M"))
+        else if(!strcmp(argv[i],"-N"))
         {
             if(i+1==argc)
                 usage(argv[0]);
@@ -95,6 +95,8 @@ void *arghandler(int argc, const char *argv[])
         }
         else usage(argv[0]);
     }
+    if(*(int *)a[3]>*(int *)a[2])
+        usage(argv[0]);
     if(*(int *)a[1]>*(int *)a[3]-*(int *)a[2])
         usage(argv[0]);
     return a;

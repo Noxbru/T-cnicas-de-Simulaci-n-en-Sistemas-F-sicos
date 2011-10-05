@@ -5,6 +5,7 @@
 
 int main(int argc, const char *argv[])
 {
+    srand(time(NULL));
     void **args;
     args=arghandler(argc,argv);
     int i;
@@ -12,8 +13,8 @@ int main(int argc, const char *argv[])
     long int numb;
     numb=*(long int *)args[0];
     ints=*(int *)args[1];
-    min=*(int *)args[2];
-    max=*(int *)args[3];
+    max=*(int *)args[2];
+    min=*(int *)args[3];
 
     int r;
     int *frecs;
@@ -21,7 +22,6 @@ int main(int argc, const char *argv[])
 
     float del=(max-min)/ints;
 
-    srand(time(NULL));
     for(i = 0; i < numb; i++)
     {
         r=min+(int)((max-min)*((float)rand()/RAND_MAX));
